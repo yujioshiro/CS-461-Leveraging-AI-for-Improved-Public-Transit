@@ -1,0 +1,36 @@
+-- This query analyzes the real estate data spatially by calculating statistics
+-- on house prices, distances to MRT stations, and convenience store counts
+-- grouped by geographic locations (latitude and longitude).
+--
+-- Inputs: 
+-- - 'Real_Estate.csv'
+--    - 'House price of unit area'
+--    - 'Distance to the nearest MRT station'
+--    - 'Number of convenience stores'
+-- Expected Output:
+-- - Measures: 
+--    - Average house price per unit area.
+--    - Average distance to the nearest MRT station.
+--    - Average number of convenience stores.
+-- - View: A summary of real estate data grouped by location (latitude and longitude),
+--   showing the averages for house price, distance to MRT, and convenience store count.
+
+source: real_estate is duckdb.table('Real_Estate.csv') extend {
+    -- Average house price per unit area
+    measure: avg_house_price is avg(`House price of unit area`)
+    -- Average distance to MRT station
+    measure: avg_distance_to_mrt is avg(`Distance to the nearest MRT station`)
+    -- Average convenience store count
+    measure: avg_convenience_store_count is avg(`Number of convenience stores`)
+
+    -- View: Real estate data by location (latitude and longitude)
+    view: by_location is {
+    group_by:
+        Latitude,
+        Longitude
+    aggregate:
+        avg_house_price,
+        avg_distance_to_mrt,
+        avg_convenience_store_count
+    }
+}
