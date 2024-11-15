@@ -1,0 +1,44 @@
+/*
+  Author: Zach Benedetti
+  Project: [Practice Data] Leveraging AI for Improved Public Transit
+  Description: Using Real Estate data to find trends
+
+  Inputs:
+
+  - FROM Real_Estate.csv
+    - House Age
+    - House Price of unit area
+    - Number of convenience stores
+  
+  Columns/Output: 
+  
+  - Latitude
+  - Longitude
+  - Average House Age
+  - Average House Price per area
+  - Average Number of convenience stores
+
+  Findings: 
+  
+  No implied strong correlations found besides a 
+  slight correlation between average house price and average
+  convenience store count.
+  
+ */
+source: real_estate is duckdb.table('Real_Estate.csv') extend {
+    measure: 
+      avg_house_age is round(avg(`House age`), 0), 
+      avg_house_price_per_area is round(avg(`House price of unit area`), 2),
+      avg_num_convenience_stores is round(avg(`Number of convenience stores`), 0)
+    
+    view: by_location is {
+      group_by:
+        Latitude,
+        Longitude
+      aggregate:
+        avg_house_age,
+        avg_house_price_per_area,
+        avg_num_convenience_stores
+    }
+}
+
