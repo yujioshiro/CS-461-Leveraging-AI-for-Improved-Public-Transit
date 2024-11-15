@@ -1,0 +1,34 @@
+/*
+
+  The below query creates a table with the following columns: 
+  
+  - Number of convience stores
+  - Average house price per unit area of the home
+  - Average distance to a mass rapid tranist (MRT) station in miles
+  - Average number of years since being sold
+  - Number of homes in each category
+
+  From the output, we see that there is some positive correlation between the number of convience stores and the average house price per unit area. 
+  
+ */
+
+source: real_estate is duckdb.table('Real_Estate.csv') extend {
+    -- Collecting averages for my query
+    measure: 
+      avg_year_since_sold is round(avg(`House age`), 0), 
+      num_of_homes is count()
+      avg_house_price_per_unit_area is round(avg(`House price of unit area`), 2),
+      avg_distance_to_mrt_miles is round(avg(`Distance to the nearest MRT station`) * 0.000621371, 2) // MRT = mass rapid transits
+
+    -- Provides a view of the average number of convience stores and how that relates to the price, average distant to MRT station, year since house was sold, and number of homes in each category. 
+    view: house_attributes_per_convience_stores is {
+      group_by:
+        `Number of convenience stores`
+      aggregate:
+          avg_house_price_per_unit_area,
+          avg_distance_to_mrt_miles,
+          avg_year_since_sold, 
+          num_of_homes
+      order_by: `Number of convenience stores` desc
+    }
+}
