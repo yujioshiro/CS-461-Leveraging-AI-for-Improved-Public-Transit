@@ -1,3 +1,8 @@
+-- Each of these queries looks at how the distance to the nearest MRT station affects the price of the home
+
+-- Currently each query has to be written individually as I'm still not sure how to use the pick expression
+-- which replaces the CASE expression in SQL
+
 source: example is duckdb.table('Real_Estate.csv')
 
 run: example -> `Distance to the nearest MRT station` + `House price of unit area` + {
