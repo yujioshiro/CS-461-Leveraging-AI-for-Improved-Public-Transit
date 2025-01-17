@@ -1,0 +1,38 @@
+-- Each of these queries looks at how the distance to the nearest MRT station affects the price of the home
+
+-- Currently each query has to be written individually as I'm still not sure how to use the pick expression
+-- which replaces the CASE expression in SQL
+
+source: example is duckdb.table('Real_Estate.csv')
+
+run: example -> `Distance to the nearest MRT station` + `House price of unit area` + {
+  where: `Distance to the nearest MRT station` < 500
+} -> {
+  aggregate:
+    number_of_houses_less_than_500_units is count()
+    avg_house_price_per_area is round(avg(`House price of unit area`), 2)
+}
+
+run: example -> `Distance to the nearest MRT station` + `House price of unit area` + {
+  where: `Distance to the nearest MRT station` >= 500 and `Distance to the nearest MRT station` < 1000
+} -> {
+  aggregate:
+    number_of_houses_between_500_and_1000_units is count()
+    avg_house_price_per_area is round(avg(`House price of unit area`), 2)
+}
+
+run: example -> `Distance to the nearest MRT station` + `House price of unit area` + {
+  where: `Distance to the nearest MRT station` >= 1000 and `Distance to the nearest MRT station` < 2000
+} -> {
+  aggregate:
+    number_of_houses_between_1000_and_2000_units is count()
+    avg_house_price_per_area is round(avg(`House price of unit area`), 2)
+}
+
+run: example -> `Distance to the nearest MRT station` + `House price of unit area` + {
+  where: `Distance to the nearest MRT station` >= 2000
+} -> {
+  aggregate:
+    number_of_houses_greater_than_2000_units is count()
+    avg_house_price_per_area is round(avg(`House price of unit area`), 2)
+}
