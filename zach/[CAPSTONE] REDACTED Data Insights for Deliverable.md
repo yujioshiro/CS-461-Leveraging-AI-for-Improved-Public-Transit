@@ -1,4 +1,4 @@
-# NOTE: THE FOLLOWING CODE DOES NOT INCLUDE PICTURES AND FIGURES LIKE IN THE ORIGINAL DOCX / PDF FILES  
+# NOTE: THE FOLLOWING MD FILE DOES NOT INCLUDE PICTURES AND FIGURES LIKE IN THE ORIGINAL DOCX / PDF FILES  
 Initial Data Analysis using a ML model  
 ![][image1]  
 First, I tested how good a NN model would be at predicting ridership based on other variables. As a sum up, it was pretty bad. So that was the first thing I was set to fix, the discrepancy of predicted vs actual and why the gaps were appearing.   
